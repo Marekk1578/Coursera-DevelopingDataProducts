@@ -8,4 +8,4 @@ The project directory contains the following
 3. Functionised.R - An initial set of code to test the concept
 4. \Slidfy - A set of slides to pitch the app
 
-
+It should be noted that there are currently known bugs in the tax calculation. The compiled app can be found at https://marekkluczynski.shinyapps.io/TaxCalculator/
