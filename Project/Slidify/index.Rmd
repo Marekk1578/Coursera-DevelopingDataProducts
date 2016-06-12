@@ -1,0 +1,131 @@
+---
+title       : UK Income Tax and National Insurance Calculator
+subtitle    : Developing Data Products course by Johns Hopkins University on Coursera
+author      : Marek Kluczynski
+job         : 
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+## Introduction
+
+The course assignment for the Developing Data Products course by Johns Hopkins University on Coursera was to build a simple Shiny application in a very short space of time. 
+
+The key requirements were as follows
+
+1. There should be some form of input (widget: text box, radio button, check box, ...)
+2. There should be some operation on the UI input in sever.R
+3. There should be some reactive output displayed as a result of server calculations
+4. You must also include enough documentation so that a novice user could use your application.
+5. The documentation should be at the Shiny website itself and not via an external link.
+
+These slides pitch the application that was built for this assignment.
+
+--- .class #id 
+
+## Application Premise
+
+The application I choose to build was a basic UK Income Tax and National Insurance Calculator. 
+
+The logic implement in the application was source from UK Government websites and can be found at http://bit.ly/1yTN3HD and http://bit.ly/1uztjM2 (correct as at 10/06/2016).
+
+It should be noted the following assumptions apply to the calculation
+
+1. The calculation is based on an input of GB Pounds.
+2. The calculation only takes account of a persons wage and pension contribution.
+3. The application does not take account of things like rental income, additional benefits, tax relief, other employment benefits, income from savings or investments etc.
+
+--- .class #id 
+
+## Example Calculation
+
+A worked example of the calculation will be for Bill. Let's assume Bill earns £50k per year and contributes 2% to his pension
+
+```{r, echo=FALSE}
+TaxCalc <- function(Wage, PensionPercentage, pie)
+{
+        
+        #Set Tax Rates
+        PersonalAllowance <- 11000
+        Basic <- 0 
+        Additional <- 0 
+        Higher <- 0 
+        NI <- 0        
+        
+        #Check if Wage is less than personal allowance
+        if(Wage<11000){ PersonalAllowance <- Wage}
+        
+        #Check is Personal Allowance Applies
+        if(Wage>= 122000 ){ PersonalAllowance <- 0}
+        
+        #Check if Basic Wage of Tax Applies
+        if(Wage>=11000)
+        {
+                if(Wage<=43000) {Basic <- (Wage - 11000) * 0.2}
+                if(Wage>43000)  {Basic <- (43000 - 11000) * 0.2}
+        }
+         
+         #Check if Higher Rate of Tax Applies
+         if(Wage>43000)
+         {
+                 if(Wage<=150000) {Higher <- (Wage - 43000) * 0.4}
+                 if(Wage>150000) {Higher <- (150000 - 43000) * 0.4}
+         }
+         
+         #Check if Additional Rate of Tax Applies
+        if(Wage >150000) {Additional <- (Wage - 150000) * 0.45}
+        
+        #Calculate National Insurance
+        WeeklyWage <- Wage / 52
+        WageNI <- (Wage- 8060)
+        if(WeeklyWage>155)
+        {
+                if(WeeklyWage<827) { NI <- WageNI *0.12 }
+                if(WeeklyWage>=827) { 
+                        NI <- ((827 - (8060/52))*52)*0.12
+                        NI <- NI + (Wage - 43000)*0.02
+                }
+        }
+        #NI <- NI + ((((WageNI/52)-827)*52)*0.02)
+        #Calculate Pension Contribution
+        Pension <- Wage * (PensionPercentage/100)
+        
+        #Calculate Take Home Less Personal Allowance
+        TakeHome <- Wage - Basic - Additional - Higher - PensionPercentage - PersonalAllowance
+        if(TakeHome<0) {TakeHome<-0}
+        
+        #Put Data into DataFrame
+        Item <- c('Personal Allowance', 'Pay After Tax', 'Basic Tax Rate', 
+                  'Additional Tax Rate ', 'Higher Tax Rate', 
+                  'National Insurace',  'Pension Contribution', 'Total Wage')
+        TaxTable <- as.data.frame(Item)
+        TaxTable$CashAmount <- c(PersonalAllowance, TakeHome, Basic, Additional, Higher, NI, Pension, Wage)
+        
+        myPlot <- c(1,2, 3,4,5,6,7)
+        if(pie<1) {return(TaxTable)}
+        if(pie>0) {return(TaxTable[myPlot,])}
+        
+}
+
+output <- TaxCalc(50000,2,0)
+output
+```
+The above calculation is implemented in the Server.R code. It should be noted that calculation has a few bugs with the logic and the numbers don't currently balance, this was due to time constraints.
+
+--- .class #id 
+
+## Application Implementation
+
+The application has been implemented using shiny and Google Charts, specially a table and doughnut chart.
+
+With regards to the requirements the assignment specified
+
+1. There are input controls in the form of two numeric input boxes, one for wage and one for pension contribution percentage.
+2. There is operation on the UI in Server.R as the Server writes out to output variables.
+3. There is some reactive output displayed as a result of the server calculations. The calculation performed is the Tax and NI calculation, this is then fed back to a  Google chart and table.
+4. A short narrative has been written to instruct a user how to use the app.
+5. The narrative has been implemented in both this document AND the app itself.

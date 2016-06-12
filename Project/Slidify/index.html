@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>UK Income Tax and National Insurance Calculator</title>
+  <meta charset="utf-8">
+  <meta name="description" content="UK Income Tax and National Insurance Calculator">
+  <meta name="author" content="Marek Kluczynski">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>UK Income Tax and National Insurance Calculator</h1>
+    <h2>Developing Data Products course by Johns Hopkins University on Coursera</h2>
+    <p>Marek Kluczynski<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Introduction</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The course assignment for the Developing Data Products course by Johns Hopkins University on Coursera was to build a simple Shiny application in a very short space of time. </p>
+
+<p>The key requirements were as follows</p>
+
+<ol>
+<li>There should be some form of input (widget: textbox, radio button, checkbox, ...)</li>
+<li>There should be some operation on the ui input in sever.R</li>
+<li>There should be some reactive output displayed as a result of server calculations</li>
+<li>You must also include enough documentation so that a novice user could use your application.</li>
+<li>The documentation should be at the Shiny website itself and not via an external link.</li>
+</ol>
+
+<p>These slides pitch the application that was built for this assignment.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Application Premise</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The application i choose to build was a basic UK Income Tax and National Insurance Calculator. </p>
+
+<p>The logic implement in the applicaiton was source from UK Goverment websites and can be found at <a href="http://bit.ly/1yTN3HD">http://bit.ly/1yTN3HD</a> and <a href="http://bit.ly/1uztjM2">http://bit.ly/1uztjM2</a> (correct as at 10/06/2016).</p>
+
+<p>It should be noted the following assumptions apply to the calculation</p>
+
+<ol>
+<li>The calculation is based on an input of GB Pounds.</li>
+<li>The calculation only takes account of a persons wage and pension contribution.</li>
+<li>The application does not take account of things like rental income, additional benefits, tax releif, other employement benefits, income from savings or invesments etc.</li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example Calculation</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>A worked example of the calculation will be for Bill. Let&#39;s assume Bill earns £50k per year and contributes 2% to his pension</p>
+
+<pre><code>##                   Item CashAmount
+## 1   Personal Allowance   11000.00
+## 2        Pay After Tax   29798.00
+## 3       Basic Tax Rate    6400.00
+## 4 Additional Tax Rate        0.00
+## 5      Higher Tax Rate    2800.00
+## 6    National Insurace    4333.28
+## 7 Pension Contribution    1000.00
+## 8           Total Wage   50000.00
+</code></pre>
+
+<p>The above calculation is implemented in the Server.R code. It should be noted that calculation has a few bugs with the logic and the numbers don&#39;t currently balance, this was due to time constraints.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Application Implementation</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The application has been implemented using shiny and Google Charts, specially a table and donut chart.</p>
+
+<p>With regards to the requirements the assignment specified</p>
+
+<ol>
+<li>There are input controls in the form of two numeric input boxes, one for wage and one for pension contribution percentage.</li>
+<li>There is operation on the UI in Server.R as the Server writes out to output variables.</li>
+<li>There is some reactive output displayed as a result of the server calculations. The calculation performed is the Tax and NI calculation, this is then fed back to a  google chart and table.</li>
+<li>A short narrative has been written to instruct a user how to use the app.</li>
+<li>The narrative has been implemented in both this document AND the app itself.</li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Introduction'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Application Premise'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Example Calculation'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Application Implementation'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
